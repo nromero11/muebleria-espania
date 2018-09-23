@@ -1,0 +1,6 @@
+{
+  "name": "Listar",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./Listar.js"
+}
