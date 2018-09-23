@@ -184,6 +184,11 @@ const User = Loadable({
   loading: Loading,
 });
 
+const Listar = Loadable({
+  loader: () => import('./views/Clientes/Listar'),
+  loading: Loading,
+});
+
 
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
@@ -229,6 +234,7 @@ const routes = [
   { path: '/charts', name: 'Charts', component: Charts },
   { path: '/users', exact: true,  name: 'Users', component: Users },
   { path: '/users/:id', exact: true, name: 'User Details', component: User },
+  { path: '/clientes/listar', exact: true, name: 'Listas', component: Listar },
 ];
 
 export default routes;
