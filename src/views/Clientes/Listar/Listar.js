@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Badge, Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table } from 'reactstrap';
+import { Button, Badge, Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 
 const TableHeader = (props) => {
@@ -11,10 +11,12 @@ const TableHeader = (props) => {
 const TableRows = (props) => {
   return(
     <tr>
-      <td>{props.data.id}</td>
       <td>{props.data.nombre}</td>
-      <td>{props.data.fecha}</td>
-      <td>Acciones</td>
+      <td>{props.data.cedula}</td>
+      <td>{props.data.cel}</td>
+      <td style={{ width: "1%"}}>
+      <Button className='fa fa-info-circle' color='primary' size='sm'/>
+      </td>
     </tr>
   );
 }
@@ -31,13 +33,13 @@ class MakeTable extends Component {
 
   render() {
     return(
-        <Col xs='12' lg='6'>
+        <Col>
           <Card>
             <CardHeader>
               <i className="fa fa-align-justify"></i> {this.state.title}
             </CardHeader>
             <CardBody>
-              <Table hover bordered striped resposive size='sm'>
+              <Table hover bordered striped resposive size='sm' style={{ textAlign: "center" }}>
                 <thead>
                   {this.state.header.map((Hval,index)=>{
                     return <TableHeader name = {Hval} key = {index}/>
@@ -45,7 +47,7 @@ class MakeTable extends Component {
                 </thead>
                 <tbody>
                 {this.state.data.map(Rval=>{
-                  return   <TableRows data = {Rval} key = {Rval.id}/>
+                  return   <ModalExample data = {Rval} key = {Rval.id}/>
                 })}
                 </tbody>
               </Table>
@@ -72,25 +74,69 @@ class Listar extends Component {
   constructor(){
     super();
     this.state = {
-      data_pending:[{id:'1',nombre:'bhagwan',fecha:'2018-09-22'},
-      {id:'2',nombre:'bhagwan',fecha:'2018-09-23'}],
-      title_pending:'Cuentas pendientes',
-      header_pending: ['ID','NOMBRE','FECHA','Acciones'],
-      data_close:[{id:'3',nombre:'bhagwan',fecha:'2018-09-22'},
-      {id:'4',nombre:'bhagwan',fecha:'2018-09-23'}],
-      title_close:'Cuentas terminadas',
-      header_close: ['ID','NOMBRE','FECHA','Acciones'],
+      _data:[{nombre:'Bhagwan Komalram',cedula:'9-845-256', cel:'62221548'},
+      {nombre:'Ban Komalram',cedula:'9-845-256', cel:'62221548'},
+      {nombre:'Gwan Komalram',cedula:'9-845-256', cel:'62221548'},
+      {nombre:'Hag Komalram',cedula:'9-845-256', cel:'62221548'}],
+      _title:'Clientes Activos',
+      _header: ['NOMBRE','CEDULA','CELULAR','ACCIONES']
     };
   }
     render(){
         return(
           <Row>
-          <MakeTable title={this.state.title_pending} header ={this.state.header_pending} data={this.state.data_pending}/>
-          <MakeTable title={this.state.title_close} header ={this.state.header_close} data={this.state.data_close}/>
-          <MakeTable title={this.state.title_close} header ={this.state.header_close} data={this.state.data_close}/>
-
+          <MakeTable title={this.state._title} header ={this.state._header} data={this.state._data}/>
           </Row>
         );
       }
 }
+
+class ModalExample extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      modal: false,
+      nombre: props.data.nombre,
+      cedula: props.data.cedula,
+      cel: props.data.cel
+    };
+
+    this.toggle = this.toggle.bind(this);
+  }
+
+  toggle() {
+    this.setState({
+      modal: !this.state.modal
+    });
+  }
+
+  render() {
+    return (
+      <tr>
+        <td>{this.state.nombre}</td>
+        <td>{this.state.cedula}</td>
+        <td>{this.state.cel}</td>
+        <td style={{ width: "1%"}}>
+        <Button className='fa fa-info-circle' color='primary' size='sm' onClick={this.toggle}></Button>
+
+        <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+          <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
+          <ModalBody>
+            Nombre: {this.state.nombre}<br/>
+            Cedula: {this.state.cedula}<br/>
+            Celular: {this.state.cel}<br/>
+            Dirección: Arraijan, Nvo Chorrillo, Brisas del Golf Arraijan.
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={this.toggle}>Do Something</Button>{' '}
+            <Button color="secondary" onClick={this.toggle}>Cancel</Button>
+          </ModalFooter>
+        </Modal>
+        </td>
+      </tr>
+    );
+  }
+}
+
+
 export default Listar;
